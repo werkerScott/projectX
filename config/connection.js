@@ -1,13 +1,21 @@
 // Set up MySQL connection.
 var mysql = require("mysql");
 
-var connection = mysql.createConnection({
-  port: 3306,
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "cat_db"
+//HEROKU REMOTE
+var connection;
+
+if (process.env.JAWSDB_URL) {
+  connection = mysql.createConnection(process.env.JAWSDB_URL);
+} else {
+  connection = mysql.createConnection({
+    port: 3306,
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "cat_db"
 });
+
+};
 
 // Make connection.
 connection.connect(function(err) {
@@ -17,6 +25,25 @@ connection.connect(function(err) {
   }
   console.log("connected as id " + connection.threadId);
 });
+
+
+// LOCAL
+// var connection = mysql.createConnection({
+//   port: 3306,
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "cat_db"
+// });
+
+// // // Make connection.
+// // connection.connect(function(err) {
+// //   if (err) {
+// //     console.error("error connecting: " + err.stack);
+// //     return;
+// //   }
+// //   console.log("connected as id " + connection.threadId);
+// // });
 
 // Export connection for our ORM to use.
 module.exports = connection;
